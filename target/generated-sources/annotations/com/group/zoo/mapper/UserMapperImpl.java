@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-14T11:14:52+0100",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.9 (Eclipse Adoptium)"
+    date = "2026-01-14T11:19:16+0100",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260101-2150, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -29,14 +29,14 @@ public class UserMapperImpl implements UserMapper {
         userDto.setFeedingIds( UserMapper.feedingListToIds( user.getFeedings() ) );
         userDto.setCleaningTaskIds( UserMapper.cleaningTaskListToIds( user.getCleanings() ) );
         userDto.setZooId( userZooId( user ) );
-        userDto.setId( user.getId() );
+        userDto.setActive( user.getActive() );
         userDto.setFirstName( user.getFirstName() );
+        userDto.setId( user.getId() );
         userDto.setLastName( user.getLastName() );
+        userDto.setLogin( user.getLogin() );
         if ( user.getRole() != null ) {
             userDto.setRole( user.getRole().name() );
         }
-        userDto.setLogin( user.getLogin() );
-        userDto.setActive( user.getActive() );
 
         return userDto;
     }
@@ -52,14 +52,14 @@ public class UserMapperImpl implements UserMapper {
         user.setFeedings( UserMapper.feedingIdsToFeedings( userDto.getFeedingIds(), feedingRepository ) );
         user.setCleanings( UserMapper.cleaningTaskIdsToCleaningTasks( userDto.getCleaningTaskIds(), cleaningTaskRepository ) );
         user.setZoo( UserMapper.zooIdToZoo( userDto.getZooId(), zooRepository ) );
-        user.setId( userDto.getId() );
+        user.setActive( userDto.getActive() );
         user.setFirstName( userDto.getFirstName() );
+        user.setId( userDto.getId() );
         user.setLastName( userDto.getLastName() );
+        user.setLogin( userDto.getLogin() );
         if ( userDto.getRole() != null ) {
             user.setRole( Enum.valueOf( UserRole.class, userDto.getRole() ) );
         }
-        user.setLogin( userDto.getLogin() );
-        user.setActive( userDto.getActive() );
 
         return user;
     }
