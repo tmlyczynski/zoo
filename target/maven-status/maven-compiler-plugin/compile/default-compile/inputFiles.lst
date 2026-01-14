@@ -1,4 +1,13 @@
 /home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/ZooApplication.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/config/NoSecurityConfig.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/AnimalController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/AnimalHealthCardController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/CleaningTaskController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/EnclosureController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/FeedingController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/FoodController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/UserController.java
+/home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/controller/ZooController.java
 /home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/domain/entity/Animal.java
 /home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/domain/entity/AnimalHealthCard.java
 /home/t0m3k/Dokumenty/projects/zoo/src/main/java/com/group/zoo/domain/entity/CleaningTask.java

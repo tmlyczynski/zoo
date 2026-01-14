@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-14T11:19:15+0100",
+    date = "2026-01-14T11:36:40+0100",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260101-2150, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
@@ -30,9 +30,9 @@ public class FeedingMapperImpl implements FeedingMapper {
         feedingDto.setAnimalId( feedingAnimalId( feeding ) );
         feedingDto.setUserId( feedingUserId( feeding ) );
         feedingDto.setFoodId( feedingFoodId( feeding ) );
-        feedingDto.setAmount( feeding.getAmount() );
-        feedingDto.setFeedingTime( feeding.getFeedingTime() );
         feedingDto.setId( feeding.getId() );
+        feedingDto.setFeedingTime( feeding.getFeedingTime() );
+        feedingDto.setAmount( feeding.getAmount() );
         feedingDto.setNotes( feeding.getNotes() );
 
         return feedingDto;
@@ -49,9 +49,9 @@ public class FeedingMapperImpl implements FeedingMapper {
         feeding.setAnimal( FeedingMapper.animalIdToAnimal( feedingDto.getAnimalId(), animalRepository ) );
         feeding.setUser( FeedingMapper.userIdToUser( feedingDto.getUserId(), userRepository ) );
         feeding.setFood( FeedingMapper.foodIdToFood( feedingDto.getFoodId(), foodRepository ) );
-        feeding.setAmount( feedingDto.getAmount() );
-        feeding.setFeedingTime( feedingDto.getFeedingTime() );
         feeding.setId( feedingDto.getId() );
+        feeding.setFeedingTime( feedingDto.getFeedingTime() );
+        feeding.setAmount( feedingDto.getAmount() );
         feeding.setNotes( feedingDto.getNotes() );
 
         return feeding;
