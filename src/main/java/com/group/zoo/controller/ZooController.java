@@ -20,13 +20,13 @@ public class ZooController {
 
     @GetMapping
     public Page<ZooDto> getAll(Pageable pageable) {
-        return zooRepository.findAll(pageable)
+        return zooRepository.findAllByDeletedFalse(pageable)
                 .map(zooMapper::toDto);
     }
 
     @GetMapping("/{id}")
     public ZooDto getById(@PathVariable Long id) {
-        return zooRepository.findById(id)
+        return zooRepository.findByIdAndDeletedFalse(id)
                 .map(zooMapper::toDto)
                 .orElse(null);
     }
@@ -46,6 +46,9 @@ public class ZooController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        zooRepository.deleteById(id);
+        zooRepository.findById(id).ifPresent(zoo -> {
+            zoo.setDeleted(true);
+            zooRepository.save(zoo);
+        });
     }
 }

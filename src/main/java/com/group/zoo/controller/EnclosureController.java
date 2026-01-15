@@ -57,6 +57,12 @@ public class EnclosureController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        enclosureRepository.deleteById(id);
+        enclosureRepository.findById(id).ifPresent(enclosure -> {
+            if (enclosure.getAnimals() == null || enclosure.getAnimals().isEmpty()) {
+                enclosureRepository.delete(enclosure);
+            } else {
+                throw new IllegalStateException("Cannot delete enclosure with animals inside.");
+            }
+        });
     }
 }

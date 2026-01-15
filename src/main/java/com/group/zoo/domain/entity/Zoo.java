@@ -27,4 +27,6 @@ public class Zoo {
 
     @OneToMany(mappedBy = "zoo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
+
+    private boolean deleted = false;
 }

@@ -6,6 +6,7 @@ import com.group.zoo.domain.entity.Animal;
 import com.group.zoo.dto.AnimalDto;
 import com.group.zoo.mapper.AnimalMapper;
 import com.group.zoo.repository.AnimalRepository;
+import com.group.zoo.repository.AnimalHealthCardRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AnimalController {
     private final AnimalRepository animalRepository;
     private final AnimalMapper animalMapper;
+    private final AnimalHealthCardRepository animalHealthCardRepository;
 
     @GetMapping
     public Page<AnimalDto> getAll(@RequestParam(required = false) String name, Pageable pageable) {
@@ -51,6 +53,11 @@ public class AnimalController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        animalRepository.deleteById(id);
+        animalRepository.findById(id).ifPresent(animal -> {
+            if (animal.getHealthCard() != null) {
+                animalHealthCardRepository.delete(animal.getHealthCard());
+            }
+            animalRepository.delete(animal);
+        });
     }
 }

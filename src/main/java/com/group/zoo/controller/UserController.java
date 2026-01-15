@@ -28,16 +28,16 @@ public class UserController {
     public Page<UserDto> getAll(@RequestParam(required = false) UserRole userRole, Pageable pageable) {
         Page<User> users;
         if (userRole != null) {
-            users = userRepository.findByUserRole(userRole, pageable);
+            users = userRepository.findByUserRoleAndDeletedFalse(userRole, pageable);
         } else {
-            users = userRepository.findAll(pageable);
+            users = userRepository.findAllByDeletedFalse(pageable);
         }
         return users.map(userMapper::toDto);
     }
 
     @GetMapping("/{id}")
     public UserDto getById(@PathVariable Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdAndDeletedFalse(id)
                 .map(userMapper::toDto)
                 .orElse(null);
     }
@@ -57,6 +57,9 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userRepository.findById(id).ifPresent(user -> {
+            user.setDeleted(true);
+            userRepository.save(user);
+        });
     }
 }

@@ -39,4 +39,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<CleaningTask> cleanings;
+
+    private boolean deleted = false;
 }

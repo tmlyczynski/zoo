@@ -52,6 +52,11 @@ public class AnimalHealthCardController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        animalHealthCardRepository.deleteById(id);
+        animalHealthCardRepository.findById(id).ifPresent(healthCard -> {
+            if (healthCard.getAnimal() != null) {
+                throw new IllegalStateException("Cannot delete health card assigned to an animal.");
+            }
+            animalHealthCardRepository.delete(healthCard);
+        });
     }
 }

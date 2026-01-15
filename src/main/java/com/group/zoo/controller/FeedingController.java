@@ -25,13 +25,13 @@ public class FeedingController {
 
     @GetMapping
     public Page<FeedingDto> getAll(Pageable pageable) {
-        return feedingRepository.findAll(pageable)
+        return feedingRepository.findAllByDeletedFalse(pageable)
                 .map(feedingMapper::toDto);
     }
 
     @GetMapping("/{id}")
     public FeedingDto getById(@PathVariable Long id) {
-        return feedingRepository.findById(id)
+        return feedingRepository.findByIdAndDeletedFalse(id)
                 .map(feedingMapper::toDto)
                 .orElse(null);
     }
@@ -51,6 +51,9 @@ public class FeedingController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        feedingRepository.deleteById(id);
+        feedingRepository.findById(id).ifPresent(feeding -> {
+            feeding.setDeleted(true);
+            feedingRepository.save(feeding);
+        });
     }
 }

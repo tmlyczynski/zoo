@@ -23,16 +23,16 @@ public class FoodController {
     public Page<FoodDto> getAll(@RequestParam(required = false) String name, Pageable pageable) {
         Page<Food> foods;
         if (name != null && !name.isEmpty()) {
-            foods = foodRepository.findByNameContainingIgnoreCase(name, pageable);
+            foods = foodRepository.findByNameContainingIgnoreCaseAndDeletedFalse(name, pageable);
         } else {
-            foods = foodRepository.findAll(pageable);
+            foods = foodRepository.findAllByDeletedFalse(pageable);
         }
         return foods.map(foodMapper::toDto);
     }
 
     @GetMapping("/{id}")
     public FoodDto getById(@PathVariable Long id) {
-        return foodRepository.findById(id)
+        return foodRepository.findByIdAndDeletedFalse(id)
                 .map(foodMapper::toDto)
                 .orElse(null);
     }
@@ -52,6 +52,9 @@ public class FoodController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        foodRepository.deleteById(id);
+        foodRepository.findById(id).ifPresent(food -> {
+            food.setDeleted(true);
+            foodRepository.save(food);
+        });
     }
 }

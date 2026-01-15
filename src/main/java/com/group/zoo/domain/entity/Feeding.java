@@ -33,4 +33,6 @@ public class Feeding {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food;
+
+    private boolean deleted = false;
 }

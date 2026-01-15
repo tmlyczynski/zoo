@@ -27,4 +27,6 @@ public class Food {
 
     @OneToMany(mappedBy = "food")
     private List<Feeding> feedings;
+
+    private boolean deleted = false;
 }
