@@ -1,16 +1,20 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.Enclosure;
+import com.group.zoo.domain.enums.EnclosureType;
 import com.group.zoo.dto.EnclosureDto;
 import com.group.zoo.mapper.EnclosureMapper;
 import com.group.zoo.repository.EnclosureRepository;
 import com.group.zoo.repository.ZooRepository;
 import com.group.zoo.repository.AnimalRepository;
 import com.group.zoo.repository.CleaningTaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/enclosures")
 public class EnclosureController {
@@ -20,19 +24,15 @@ public class EnclosureController {
     private final AnimalRepository animalRepository;
     private final CleaningTaskRepository cleaningTaskRepository;
 
-    public EnclosureController(EnclosureRepository enclosureRepository, EnclosureMapper enclosureMapper, ZooRepository zooRepository, AnimalRepository animalRepository, CleaningTaskRepository cleaningTaskRepository) {
-        this.enclosureRepository = enclosureRepository;
-        this.enclosureMapper = enclosureMapper;
-        this.zooRepository = zooRepository;
-        this.animalRepository = animalRepository;
-        this.cleaningTaskRepository = cleaningTaskRepository;
-    }
-
     @GetMapping
-    public List<EnclosureDto> getAll() {
-        return enclosureRepository.findAll().stream()
-                .map(enclosureMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<EnclosureDto> getAll(@RequestParam(required = false) EnclosureType type, Pageable pageable) {
+        Page<Enclosure> enclosures;
+        if (type != null) {
+            enclosures = enclosureRepository.findByType(type, pageable);
+        } else {
+            enclosures = enclosureRepository.findAll(pageable);
+        }
+        return enclosures.map(enclosureMapper::toDto);
     }
 
     @GetMapping("/{id}")

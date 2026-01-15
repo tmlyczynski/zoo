@@ -1,5 +1,7 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.Feeding;
 import com.group.zoo.dto.FeedingDto;
 import com.group.zoo.mapper.FeedingMapper;
@@ -7,10 +9,11 @@ import com.group.zoo.repository.FeedingRepository;
 import com.group.zoo.repository.AnimalRepository;
 import com.group.zoo.repository.UserRepository;
 import com.group.zoo.repository.FoodRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/feedings")
 public class FeedingController {
@@ -20,19 +23,10 @@ public class FeedingController {
     private final UserRepository userRepository;
     private final FoodRepository foodRepository;
 
-    public FeedingController(FeedingRepository feedingRepository, FeedingMapper feedingMapper, AnimalRepository animalRepository, UserRepository userRepository, FoodRepository foodRepository) {
-        this.feedingRepository = feedingRepository;
-        this.feedingMapper = feedingMapper;
-        this.animalRepository = animalRepository;
-        this.userRepository = userRepository;
-        this.foodRepository = foodRepository;
-    }
-
     @GetMapping
-    public List<FeedingDto> getAll() {
-        return feedingRepository.findAll().stream()
-                .map(feedingMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<FeedingDto> getAll(Pageable pageable) {
+        return feedingRepository.findAll(pageable)
+                .map(feedingMapper::toDto);
     }
 
     @GetMapping("/{id}")

@@ -1,14 +1,17 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.AnimalHealthCard;
 import com.group.zoo.dto.AnimalHealthCardDto;
 import com.group.zoo.mapper.AnimalHealthCardMapper;
 import com.group.zoo.repository.AnimalHealthCardRepository;
 import com.group.zoo.repository.AnimalRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/animal-health-cards")
 public class AnimalHealthCardController {
@@ -16,17 +19,15 @@ public class AnimalHealthCardController {
     private final AnimalHealthCardMapper animalHealthCardMapper;
     private final AnimalRepository animalRepository;
 
-    public AnimalHealthCardController(AnimalHealthCardRepository animalHealthCardRepository, AnimalHealthCardMapper animalHealthCardMapper, AnimalRepository animalRepository) {
-        this.animalHealthCardRepository = animalHealthCardRepository;
-        this.animalHealthCardMapper = animalHealthCardMapper;
-        this.animalRepository = animalRepository;
-    }
-
     @GetMapping
-    public List<AnimalHealthCardDto> getAll() {
-        return animalHealthCardRepository.findAll().stream()
-                .map(animalHealthCardMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<AnimalHealthCardDto> getAll(@RequestParam(required = false) String veterinarianName, Pageable pageable) {
+        Page<AnimalHealthCard> animalHealthCards;
+        if (veterinarianName != null && !veterinarianName.isEmpty()) {
+            animalHealthCards = animalHealthCardRepository.findByVeterinarianNameContainingIgnoreCase(veterinarianName, pageable);
+        } else {
+            animalHealthCards = animalHealthCardRepository.findAll(pageable);
+        }
+        return animalHealthCards.map(animalHealthCardMapper::toDto);
     }
 
     @GetMapping("/{id}")

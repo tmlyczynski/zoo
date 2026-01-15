@@ -1,15 +1,18 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.CleaningTask;
 import com.group.zoo.dto.CleaningTaskDto;
 import com.group.zoo.mapper.CleaningTaskMapper;
 import com.group.zoo.repository.CleaningTaskRepository;
 import com.group.zoo.repository.EnclosureRepository;
 import com.group.zoo.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/cleaning-tasks")
 public class CleaningTaskController {
@@ -18,18 +21,10 @@ public class CleaningTaskController {
     private final EnclosureRepository enclosureRepository;
     private final UserRepository userRepository;
 
-    public CleaningTaskController(CleaningTaskRepository cleaningTaskRepository, CleaningTaskMapper cleaningTaskMapper, EnclosureRepository enclosureRepository, UserRepository userRepository) {
-        this.cleaningTaskRepository = cleaningTaskRepository;
-        this.cleaningTaskMapper = cleaningTaskMapper;
-        this.enclosureRepository = enclosureRepository;
-        this.userRepository = userRepository;
-    }
-
     @GetMapping
-    public List<CleaningTaskDto> getAll() {
-        return cleaningTaskRepository.findAll().stream()
-                .map(cleaningTaskMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<CleaningTaskDto> getAll(Pageable pageable) {
+        return cleaningTaskRepository.findAll(pageable)
+                .map(cleaningTaskMapper::toDto);
     }
 
     @GetMapping("/{id}")

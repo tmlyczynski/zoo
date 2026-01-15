@@ -1,16 +1,20 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.User;
+import com.group.zoo.domain.enums.UserRole;
 import com.group.zoo.dto.UserDto;
 import com.group.zoo.mapper.UserMapper;
 import com.group.zoo.repository.UserRepository;
 import com.group.zoo.repository.ZooRepository;
 import com.group.zoo.repository.FeedingRepository;
 import com.group.zoo.repository.CleaningTaskRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -20,19 +24,15 @@ public class UserController {
     private final FeedingRepository feedingRepository;
     private final CleaningTaskRepository cleaningTaskRepository;
 
-    public UserController(UserRepository userRepository, UserMapper userMapper, ZooRepository zooRepository, FeedingRepository feedingRepository, CleaningTaskRepository cleaningTaskRepository) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.zooRepository = zooRepository;
-        this.feedingRepository = feedingRepository;
-        this.cleaningTaskRepository = cleaningTaskRepository;
-    }
-
     @GetMapping
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<UserDto> getAll(@RequestParam(required = false) UserRole userRole, Pageable pageable) {
+        Page<User> users;
+        if (userRole != null) {
+            users = userRepository.findByUserRole(userRole, pageable);
+        } else {
+            users = userRepository.findAll(pageable);
+        }
+        return users.map(userMapper::toDto);
     }
 
     @GetMapping("/{id}")

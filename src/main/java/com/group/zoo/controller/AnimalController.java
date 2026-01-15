@@ -1,29 +1,32 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.Animal;
 import com.group.zoo.dto.AnimalDto;
 import com.group.zoo.mapper.AnimalMapper;
 import com.group.zoo.repository.AnimalRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/animals")
 public class AnimalController {
     private final AnimalRepository animalRepository;
     private final AnimalMapper animalMapper;
 
-    public AnimalController(AnimalRepository animalRepository, AnimalMapper animalMapper) {
-        this.animalRepository = animalRepository;
-        this.animalMapper = animalMapper;
-    }
-
     @GetMapping
-    public List<AnimalDto> getAll() {
-        return animalRepository.findAll().stream()
-                .map(animalMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<AnimalDto> getAll(@RequestParam(required = false) String name, Pageable pageable) {
+        Page<Animal> animals;
+        if (name != null && !name.isEmpty()) {
+            animals = animalRepository.findByNameContainingIgnoreCase(name, pageable);
+        } else {
+            animals = animalRepository.findAll(pageable);
+        }
+        return animals.map(animalMapper::toDto);
+  
     }
 
     @GetMapping("/{id}")

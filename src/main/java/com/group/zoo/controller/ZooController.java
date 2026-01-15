@@ -1,29 +1,27 @@
 package com.group.zoo.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import com.group.zoo.domain.entity.Zoo;
 import com.group.zoo.dto.ZooDto;
 import com.group.zoo.mapper.ZooMapper;
 import com.group.zoo.repository.ZooRepository;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/zoos")
 public class ZooController {
     private final ZooRepository zooRepository;
     private final ZooMapper zooMapper;
 
-    public ZooController(ZooRepository zooRepository, ZooMapper zooMapper) {
-        this.zooRepository = zooRepository;
-        this.zooMapper = zooMapper;
-    }
-
     @GetMapping
-    public List<ZooDto> getAll() {
-        return zooRepository.findAll().stream()
-                .map(zooMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ZooDto> getAll(Pageable pageable) {
+        return zooRepository.findAll(pageable)
+                .map(zooMapper::toDto);
     }
 
     @GetMapping("/{id}")

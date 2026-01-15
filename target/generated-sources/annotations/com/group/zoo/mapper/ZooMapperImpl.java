@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-14T11:36:40+0100",
+    date = "2026-01-15T09:57:08+0100",
     comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260101-2150, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
@@ -23,10 +23,10 @@ public class ZooMapperImpl implements ZooMapper {
 
         zooDto.setEnclosureIds( ZooMapper.enclosureListToIds( zoo.getEnclosures() ) );
         zooDto.setUserIds( ZooMapper.userListToIds( zoo.getUsers() ) );
-        zooDto.setId( zoo.getId() );
-        zooDto.setName( zoo.getName() );
         zooDto.setCity( zoo.getCity() );
         zooDto.setCountry( zoo.getCountry() );
+        zooDto.setId( zoo.getId() );
+        zooDto.setName( zoo.getName() );
         zooDto.setOpenFrom( zoo.getOpenFrom() );
         zooDto.setOpenTo( zoo.getOpenTo() );
 
@@ -41,10 +41,10 @@ public class ZooMapperImpl implements ZooMapper {
 
         Zoo zoo = new Zoo();
 
-        zoo.setId( zooDto.getId() );
-        zoo.setName( zooDto.getName() );
         zoo.setCity( zooDto.getCity() );
         zoo.setCountry( zooDto.getCountry() );
+        zoo.setId( zooDto.getId() );
+        zoo.setName( zooDto.getName() );
         zoo.setOpenFrom( zooDto.getOpenFrom() );
         zoo.setOpenTo( zooDto.getOpenTo() );
 
