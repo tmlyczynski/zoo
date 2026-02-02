@@ -13,4 +13,3 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findAllByDeletedFalse(Pageable pageable);
     Optional<Food> findByIdAndDeletedFalse(Long id);
 }
-}

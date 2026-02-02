@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-15T11:23:14+0100",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260101-2150, environment: Java 21.0.9 (Eclipse Adoptium)"
+    date = "2026-02-02T09:10:33+0100",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260128-0750, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
 public class CleaningTaskMapperImpl implements CleaningTaskMapper {
@@ -28,9 +28,9 @@ public class CleaningTaskMapperImpl implements CleaningTaskMapper {
 
         cleaningTaskDto.setEnclosureId( cleaningTaskEnclosureId( cleaningTask ) );
         cleaningTaskDto.setUserId( cleaningTaskUserId( cleaningTask ) );
+        cleaningTaskDto.setDoneAt( cleaningTask.getDoneAt() );
         cleaningTaskDto.setId( cleaningTask.getId() );
         cleaningTaskDto.setPlannedAt( cleaningTask.getPlannedAt() );
-        cleaningTaskDto.setDoneAt( cleaningTask.getDoneAt() );
         if ( cleaningTask.getStatus() != null ) {
             cleaningTaskDto.setStatus( cleaningTask.getStatus().name() );
         }
@@ -48,9 +48,9 @@ public class CleaningTaskMapperImpl implements CleaningTaskMapper {
 
         cleaningTask.setEnclosure( CleaningTaskMapper.enclosureIdToEnclosure( cleaningTaskDto.getEnclosureId(), enclosureRepository ) );
         cleaningTask.setUser( CleaningTaskMapper.userIdToUser( cleaningTaskDto.getUserId(), userRepository ) );
+        cleaningTask.setDoneAt( cleaningTaskDto.getDoneAt() );
         cleaningTask.setId( cleaningTaskDto.getId() );
         cleaningTask.setPlannedAt( cleaningTaskDto.getPlannedAt() );
-        cleaningTask.setDoneAt( cleaningTaskDto.getDoneAt() );
         if ( cleaningTaskDto.getStatus() != null ) {
             cleaningTask.setStatus( Enum.valueOf( TaskStatus.class, cleaningTaskDto.getStatus() ) );
         }

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-01-15T11:23:51+0100",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260101-2150, environment: Java 21.0.9 (Eclipse Adoptium)"
+    date = "2026-02-02T09:10:33+0100",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.45.0.v20260128-0750, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
 public class AnimalMapperImpl implements AnimalMapper {
@@ -30,15 +30,15 @@ public class AnimalMapperImpl implements AnimalMapper {
         animalDto.setFeedingIds( AnimalMapper.feedingListToIds( animal.getFeedings() ) );
         animalDto.setEnclosureId( animalEnclosureId( animal ) );
         animalDto.setHealthCardId( animalHealthCardId( animal ) );
+        animalDto.setDateOfBirth( animal.getDateOfBirth() );
+        if ( animal.getDiet() != null ) {
+            animalDto.setDiet( animal.getDiet().name() );
+        }
         animalDto.setId( animal.getId() );
         animalDto.setName( animal.getName() );
         animalDto.setSpecies( animal.getSpecies() );
-        animalDto.setDateOfBirth( animal.getDateOfBirth() );
         if ( animal.getType() != null ) {
             animalDto.setType( animal.getType().name() );
-        }
-        if ( animal.getDiet() != null ) {
-            animalDto.setDiet( animal.getDiet().name() );
         }
 
         return animalDto;
